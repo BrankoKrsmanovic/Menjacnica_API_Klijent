@@ -17,6 +17,12 @@ import javax.swing.JButton;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.CaretEvent;
 
 public class MainWindow extends JFrame {
 
@@ -35,19 +41,12 @@ public class MainWindow extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-*/
+	/*
+	 * public static void main(String[] args) { EventQueue.invokeLater(new
+	 * Runnable() { public void run() { try { MainWindow frame = new MainWindow();
+	 * frame.setVisible(true); } catch (Exception e) { e.printStackTrace(); } } });
+	 * }
+	 */
 	/**
 	 * Create the frame.
 	 */
@@ -77,6 +76,7 @@ public class MainWindow extends JFrame {
 		contentPane.add(getTextFieldTo());
 		contentPane.add(getBtnKonvertuj());
 	}
+
 	private JLabel getLblIzZemlje() {
 		if (lblIzZemlje == null) {
 			lblIzZemlje = new JLabel("Iz valute zemlje");
@@ -84,6 +84,7 @@ public class MainWindow extends JFrame {
 		}
 		return lblIzZemlje;
 	}
+
 	private JComboBox getComboBoxFrom() {
 		if (comboBoxFrom == null) {
 			comboBoxFrom = new JComboBox(countries.toArray());
@@ -91,6 +92,7 @@ public class MainWindow extends JFrame {
 		}
 		return comboBoxFrom;
 	}
+
 	private JLabel getLblIznos() {
 		if (lblIznos == null) {
 			lblIznos = new JLabel("Iznos");
@@ -98,14 +100,30 @@ public class MainWindow extends JFrame {
 		}
 		return lblIznos;
 	}
+
 	private JTextField getTextFieldFrom() {
 		if (textFieldFrom == null) {
 			textFieldFrom = new JTextField();
+			textFieldFrom.getDocument().addDocumentListener(new DocumentListener() {
+				public void changedUpdate(DocumentEvent e) {
+
+				}
+
+				public void removeUpdate(DocumentEvent e) {
+					if (textFieldFrom.getText().isEmpty())
+						btnKonvertuj.setEnabled(false);
+				}
+
+				public void insertUpdate(DocumentEvent e) {
+					btnKonvertuj.setEnabled(true);
+				}
+			});
 			textFieldFrom.setBounds(32, 168, 113, 20);
 			textFieldFrom.setColumns(10);
 		}
 		return textFieldFrom;
 	}
+
 	private JLabel getLblZemlje() {
 		if (lblZemlje == null) {
 			lblZemlje = new JLabel("U valutu zemlje");
@@ -113,6 +131,7 @@ public class MainWindow extends JFrame {
 		}
 		return lblZemlje;
 	}
+
 	private JComboBox getComboBoxTo() {
 		if (comboBoxTo == null) {
 			comboBoxTo = new JComboBox(countries.toArray());
@@ -120,6 +139,7 @@ public class MainWindow extends JFrame {
 		}
 		return comboBoxTo;
 	}
+
 	private JLabel getLblIznos1() {
 		if (lblIznos1 == null) {
 			lblIznos1 = new JLabel("Iznos");
@@ -127,6 +147,7 @@ public class MainWindow extends JFrame {
 		}
 		return lblIznos1;
 	}
+
 	private JTextField getTextFieldTo() {
 		if (textFieldTo == null) {
 			textFieldTo = new JTextField();
@@ -136,9 +157,27 @@ public class MainWindow extends JFrame {
 		}
 		return textFieldTo;
 	}
+
 	private JButton getBtnKonvertuj() {
 		if (btnKonvertuj == null) {
 			btnKonvertuj = new JButton("Konvertuj");
+			btnKonvertuj.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int fromIndex = comboBoxFrom.getSelectedIndex();
+					int toIndex = comboBoxTo.getSelectedIndex();
+					String from = countries.get(fromIndex).getCurrencyId();
+					String to = countries.get(toIndex).getCurrencyId();
+					try {
+						double rate = GUIController.lc.returnExchangeRate(from, to);
+						double amount = Double.parseDouble(textFieldFrom.getText());
+
+						textFieldTo.setText("" + rate * amount);
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, "Konverzija nije uspela!", "Greska",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
 			btnKonvertuj.setEnabled(false);
 			btnKonvertuj.setBounds(178, 218, 89, 23);
 		}
