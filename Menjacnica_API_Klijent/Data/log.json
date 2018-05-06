@@ -1,0 +1,26 @@
+[
+  {
+    "datumVreme": "2018-05-06 18:25:18 PM",
+    "izValute": "BRL",
+    "uValutu": "AUD",
+    "kurs": 0.375631
+  },
+  {
+    "datumVreme": "2018-05-06 18:26:03 PM",
+    "izValute": "EUR",
+    "uValutu": "RSD",
+    "kurs": 117.614121
+  },
+  {
+    "datumVreme": "2018-05-06 18:26:07 PM",
+    "izValute": "EUR",
+    "uValutu": "RSD",
+    "kurs": 117.614121
+  },
+  {
+    "datumVreme": "2018-05-06 18:26:48 PM",
+    "izValute": "INR",
+    "uValutu": "EUR",
+    "kurs": 0.012509
+  }
+]

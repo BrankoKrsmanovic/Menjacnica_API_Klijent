@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import util.GetCountriesUtil;
 import util.ReturnExchangeRateUtil;
+import util.SaveExcahngeUtil;
 import util.URLConnectionUtil;
 
 public class LogicController {
@@ -19,5 +20,9 @@ public class LogicController {
 	
 	public double returnExchangeRate(String from, String to) throws Exception{
 		return ReturnExchangeRateUtil.convert(from, to);
+	}
+	
+	public void saveExchange(String from, String to, Double rate) throws Exception {
+		SaveExcahngeUtil.save(from, to, rate);
 	}
 }

@@ -167,14 +167,22 @@ public class MainWindow extends JFrame {
 					int toIndex = comboBoxTo.getSelectedIndex();
 					String from = countries.get(fromIndex).getCurrencyId();
 					String to = countries.get(toIndex).getCurrencyId();
+					double rate = 0;
 					try {
-						double rate = GUIController.lc.returnExchangeRate(from, to);
+						rate = GUIController.lc.returnExchangeRate(from, to);
 						double amount = Double.parseDouble(textFieldFrom.getText());
 
 						textFieldTo.setText("" + rate * amount);
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, "Konverzija nije uspela!", "Greska",
 								JOptionPane.ERROR_MESSAGE);
+					} finally {
+						try {
+							GUIController.lc.saveExchange(from, to, rate);
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Konverzija nije sacuvana!", "Greska",
+									JOptionPane.ERROR_MESSAGE);	
+						}
 					}
 				}
 			});
