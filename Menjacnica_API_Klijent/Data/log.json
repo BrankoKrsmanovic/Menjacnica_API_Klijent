@@ -22,5 +22,17 @@
     "izValute": "INR",
     "uValutu": "EUR",
     "kurs": 0.012509
+  },
+  {
+    "datumVreme": "2018-05-06 18:33:13 PM",
+    "izValute": "USD",
+    "uValutu": "CAD",
+    "kurs": 1.284204
+  },
+  {
+    "datumVreme": "2018-05-06 18:33:25 PM",
+    "izValute": "CAD",
+    "uValutu": "RSD",
+    "kurs": 76.538145
   }
 ]

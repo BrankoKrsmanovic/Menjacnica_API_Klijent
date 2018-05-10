@@ -1,19 +1,18 @@
 package util;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import logic.Exchange;
 
 public class SaveExcahngeUtil {
 
-	public static void save(String from, String to, Double rate) throws Exception {
+	public static void save(String from, String to, Double rate) {
 		Exchange exchange = new Exchange();
 		exchange.setIzValute(from);
 		exchange.setuValutu(to);
@@ -28,16 +27,27 @@ public class SaveExcahngeUtil {
 		JsonObject objJSON = gson.fromJson(s, JsonObject.class);
 		JsonArray log = null;
 
-		FileReader reader = new FileReader("Data/log.json");
-		log = gson.fromJson(reader, JsonArray.class);
-		reader.close();
+		try {
+			FileReader reader = new FileReader("Data/log.json");
+			log = gson.fromJson(reader, JsonArray.class);
+			reader.close();
+		} catch (Exception e) {
+			try {
+				FileWriter writer = new FileWriter("Data/log.json");
+				writer.close();
+			} catch (IOException e1) {
+			}
+		} 
 		
-		FileWriter writer = new FileWriter("Data/log.json");
-		if(log == null) 
-			log = new JsonArray();
+		try {
+			FileWriter writer = new FileWriter("Data/log.json");
+			if(log == null) 
+				log = new JsonArray();
 
-		log.add(objJSON);
-		writer.append(gson.toJson(log));
-		writer.close();
+			log.add(objJSON);
+			writer.append(gson.toJson(log));
+			writer.close();
+		} catch (Exception e) {
+		}
 	}
 }
